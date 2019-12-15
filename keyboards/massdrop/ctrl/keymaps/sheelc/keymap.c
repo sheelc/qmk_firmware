@@ -14,13 +14,20 @@ enum ctrl_keycodes {
     DBG_KBD,               //DEBUG Toggle Keyboard Prints
     DBG_MOU,               //DEBUG Toggle Mouse Prints
     MD_BOOT,               //Restart into bootloader after hold timeout
+    LIN_SW_APP,            //Linux Switch Apps
+    LIN_SW_WIN,            //Linux Switch Windows
+    LIN_PREV_TAB,          //Linux Prev Tab
+    LIN_NEXT_TAB,          //Linux Next Tab
+    LIN_CLOSE_WIN,         //Linux Close Window
+    LIN_COPY,              //Linux Copy
+    LIN_PASTE,             //Linux Paste
 };
 
 keymap_config_t keymap_config;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_LIN_QWERTY] = LAYOUT(
-        KC_ESC,        KC_F1,         KC_F2,         KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,         KC_F10,   KC_F11,        KC_F12,             KC_PSCR, KC_SLCK, KC_PAUS, \
+        KC_ESC,        KC_F1,         LIN_COPY,      LIN_PASTE,   LIN_CLOSE_WIN,   LIN_PREV_TAB,   LIN_NEXT_TAB,   LIN_SW_APP,   LIN_SW_WIN,   KC_F9,         KC_F10,   KC_F11,        KC_F12,             KC_PSCR, KC_SLCK, KC_PAUS, \
         KC_GRV,        KC_1,          KC_2,          KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,          KC_0,     KC_MINS,       KC_EQL,  KC_BSPC,   KC_INS,  KC_HOME, KC_PGUP, \
         KC_TAB,        KC_Q,          KC_W,          KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,          KC_P,     KC_LBRC,       KC_RBRC, KC_BSLS,   KC_DEL,  KC_END,  KC_PGDN, \
         KC_CAPS,       KC_A,          KC_S,          KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,          KC_SCLN,  KC_QUOT,       KC_ENT, \
@@ -136,9 +143,60 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               }
             }
             return false;
+        case LIN_SW_APP:
+            if (record->event.pressed) {
+                register_code(KC_LALT);
+                tap_code(KC_TAB);
+                unregister_code(KC_LALT);
+            }
+            break;
+        case LIN_SW_WIN:
+            if (record->event.pressed) {
+                register_code(KC_LGUI);
+                tap_code(KC_GRV);
+                unregister_code(KC_LGUI);
+            }
+            break;
+        case LIN_PREV_TAB:
+            if (record->event.pressed) {
+                register_code(KC_LALT);
+                tap_code(KC_PGUP);
+                unregister_code(KC_LALT);
+            }
+            break;
+        case LIN_NEXT_TAB:
+            if (record->event.pressed) {
+                register_code(KC_LALT);
+                tap_code(KC_PGDN);
+                unregister_code(KC_LALT);
+            }
+            break;
+        case LIN_CLOSE_WIN:
+            if (record->event.pressed) {
+                register_code(KC_LALT);
+                tap_code(KC_F4);
+                unregister_code(KC_LALT);
+            }
+            break;
+        case LIN_COPY:
+            if (record->event.pressed) {
+                register_code(KC_LALT);
+                tap_code(KC_C);
+                unregister_code(KC_LALT);
+            }
+            break;
+        case LIN_PASTE:
+            if (record->event.pressed) {
+                register_code(KC_LALT);
+                tap_code(KC_V);
+                unregister_code(KC_LALT);
+            }
+            break;
         default:
             return true; //Process all other keycodes normally
     }
+
+    return true;
 }
 
 void reset_random_color(int i) {
@@ -152,29 +210,85 @@ void oneshot_mods_changed_user(uint8_t mods) {
         rgb_matrix_set_color(63, RGB_RED);
         rgb_matrix_set_color(74, RGB_RED);
     } else {
-        reset_random_color(63);
-        reset_random_color(74);
+        reset_random_color(63); // LSHIFT
+        reset_random_color(74); // RSHIFT
     }
 
     if (mods & MOD_MASK_CTRL) {
-        rgb_matrix_set_color(76, RGB_RED);
-        rgb_matrix_set_color(83, RGB_RED);
+        rgb_matrix_set_color(76, RGB_RED); // LCTRL
+        rgb_matrix_set_color(83, RGB_RED); // RCTRL
     } else {
         reset_random_color(76);
         reset_random_color(83);
     }
 
     if (mods & MOD_MASK_ALT) {
-        rgb_matrix_set_color(78, RGB_RED);
-        rgb_matrix_set_color(80, RGB_RED);
+        rgb_matrix_set_color(78, RGB_RED); // LALT
+        rgb_matrix_set_color(80, RGB_RED); // RALT
     } else {
         reset_random_color(78);
         reset_random_color(80);
     }
 
     if (mods & MOD_MASK_GUI) {
-        rgb_matrix_set_color(77, RGB_RED);
+        rgb_matrix_set_color(77, RGB_RED); // GUI
     } else {
         reset_random_color(77);
+    }
+}
+
+void rgb_matrix_indicators_user(void) {
+    static bool clearedBoard = false;
+    uint8_t layer = biton32(layer_state);
+
+    switch (layer) {
+    case _LIN_QWERTY:
+    case _MAC_QWERTY:
+        if (clearedBoard) {
+            clearedBoard = false;
+            for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
+                reset_random_color(i);
+            }
+        }
+        break;
+    case _FNC:
+        clearedBoard = true;
+        bool mac_layer_on = layer_state_cmp(layer_state, _MAC_QWERTY);
+        rgb_matrix_set_color_all(0, 0, 0);
+        rgb_matrix_set_color(13, RGB_RED); // Mute
+        if (mac_layer_on) {
+            rgb_matrix_set_color(17, RGB_RED); // Number 1
+        } else {
+            rgb_matrix_set_color(17, RGB_GREEN);
+        }
+
+        rgb_matrix_set_color(30, RGB_GREEN); // Ins
+        rgb_matrix_set_color(31, RGB_GREEN); // Home
+        rgb_matrix_set_color(32, RGB_GREEN); // PageUp
+        rgb_matrix_set_color(68, RGB_GOLD); // B
+        return;
+    }
+
+    if ((get_oneshot_mods() & MOD_MASK_SHIFT) &&
+        !has_oneshot_mods_timed_out()) {
+        rgb_matrix_set_color(63, RGB_RED);
+        rgb_matrix_set_color(74, RGB_RED);
+    }
+
+    if ((get_oneshot_mods() & MOD_MASK_CTRL) &&
+        !has_oneshot_mods_timed_out()) {
+        rgb_matrix_set_color(76, RGB_RED);
+        rgb_matrix_set_color(83, RGB_RED);
+    }
+
+    if ((get_oneshot_mods() & MOD_MASK_ALT) &&
+        !has_oneshot_mods_timed_out()) {
+        rgb_matrix_set_color(78, RGB_RED);
+        rgb_matrix_set_color(80, RGB_RED);
+    }
+
+    if ((get_oneshot_mods() & MOD_MASK_GUI) &&
+        !has_oneshot_mods_timed_out()) {
+        rgb_matrix_set_color(77, RGB_RED);
     }
 }
