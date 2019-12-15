@@ -32,7 +32,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,        KC_Q,          KC_W,          KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,          KC_P,     KC_LBRC,       KC_RBRC, KC_BSLS,   KC_DEL,  KC_END,  KC_PGDN, \
         KC_CAPS,       KC_A,          KC_S,          KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,          KC_SCLN,  KC_QUOT,       KC_ENT, \
         OSM(MOD_LSFT), KC_Z,          KC_X,          KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,        KC_SLSH,  OSM(MOD_RSFT),                              KC_UP, \
-        OSM(MOD_LCTL), OSM(MOD_LGUI), OSM(MOD_LALT),                   KC_SPC,                             OSM(MOD_RALT), MO(_FNC), KC_APP,        OSM(MOD_RCTL),      KC_LEFT, KC_DOWN, KC_RGHT \
+        OSM(MOD_LCTL), OSM(MOD_LALT), OSM(MOD_LCTL),                   KC_SPC,                             OSM(MOD_RCTL), MO(_FNC), KC_APP,        OSM(MOD_RCTL),      KC_LEFT, KC_DOWN, KC_RGHT \
     ),
     [_MAC_QWERTY] = LAYOUT(
         KC_ESC,        KC_F1,         KC_F2,         KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,         KC_F10,   KC_F11,        KC_F12,             KC_PSCR, KC_SLCK, KC_PAUS, \
@@ -40,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,        KC_Q,          KC_W,          KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,          KC_P,     KC_LBRC,       KC_RBRC, KC_BSLS,   KC_DEL,  KC_END,  KC_PGDN, \
         KC_CAPS,       KC_A,          KC_S,          KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,          KC_SCLN,  KC_QUOT,       KC_ENT, \
         OSM(MOD_LSFT), KC_Z,          KC_X,          KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,        KC_SLSH,  OSM(MOD_RSFT),                              KC_UP, \
-        OSM(MOD_LCTL), OSM(MOD_LGUI), OSM(MOD_LALT),                   KC_SPC,                             OSM(MOD_RALT), MO(_FNC), KC_APP,        OSM(MOD_RCTL),      KC_LEFT, KC_DOWN, KC_RGHT \
+        OSM(MOD_LCTL), OSM(MOD_LALT), OSM(MOD_LCMD),                   KC_SPC,                             OSM(MOD_RCMD), MO(_FNC), KC_APP,        OSM(MOD_RCTL),      KC_LEFT, KC_DOWN, KC_RGHT \
     ),
     [_FNC] = LAYOUT(
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,            KC_MUTE, _______, _______, \
@@ -145,9 +145,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case LIN_SW_APP:
             if (record->event.pressed) {
-                register_code(KC_LALT);
+                register_code(KC_LCTL);
                 tap_code(KC_TAB);
-                unregister_code(KC_LALT);
+                unregister_code(KC_LCTL);
             }
             break;
         case LIN_SW_WIN:
@@ -159,37 +159,37 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case LIN_PREV_TAB:
             if (record->event.pressed) {
-                register_code(KC_LALT);
+                register_code(KC_LCTL);
                 tap_code(KC_PGUP);
-                unregister_code(KC_LALT);
+                unregister_code(KC_LCTL);
             }
             break;
         case LIN_NEXT_TAB:
             if (record->event.pressed) {
-                register_code(KC_LALT);
+                register_code(KC_LCTL);
                 tap_code(KC_PGDN);
-                unregister_code(KC_LALT);
+                unregister_code(KC_LCTL);
             }
             break;
         case LIN_CLOSE_WIN:
             if (record->event.pressed) {
-                register_code(KC_LALT);
+                register_code(KC_LCTL);
                 tap_code(KC_F4);
-                unregister_code(KC_LALT);
+                unregister_code(KC_LCTL);
             }
             break;
         case LIN_COPY:
             if (record->event.pressed) {
-                register_code(KC_LALT);
+                register_code(KC_LCTL);
                 tap_code(KC_C);
-                unregister_code(KC_LALT);
+                unregister_code(KC_LCTL);
             }
             break;
         case LIN_PASTE:
             if (record->event.pressed) {
-                register_code(KC_LALT);
+                register_code(KC_LCTL);
                 tap_code(KC_V);
-                unregister_code(KC_LALT);
+                unregister_code(KC_LCTL);
             }
             break;
         default:
@@ -217,20 +217,16 @@ void oneshot_mods_changed_user(uint8_t mods) {
     if (mods & MOD_MASK_CTRL) {
         rgb_matrix_set_color(76, RGB_RED); // LCTRL
         rgb_matrix_set_color(83, RGB_RED); // RCTRL
-    } else {
-        reset_random_color(76);
-        reset_random_color(83);
-    }
-
-    if (mods & MOD_MASK_ALT) {
         rgb_matrix_set_color(78, RGB_RED); // LALT
         rgb_matrix_set_color(80, RGB_RED); // RALT
     } else {
+        reset_random_color(76);
+        reset_random_color(83);
         reset_random_color(78);
         reset_random_color(80);
     }
 
-    if (mods & MOD_MASK_GUI) {
+    if (mods & MOD_MASK_ALT) {
         rgb_matrix_set_color(77, RGB_RED); // GUI
     } else {
         reset_random_color(77);
@@ -279,15 +275,11 @@ void rgb_matrix_indicators_user(void) {
         !has_oneshot_mods_timed_out()) {
         rgb_matrix_set_color(76, RGB_RED);
         rgb_matrix_set_color(83, RGB_RED);
-    }
-
-    if ((get_oneshot_mods() & MOD_MASK_ALT) &&
-        !has_oneshot_mods_timed_out()) {
         rgb_matrix_set_color(78, RGB_RED);
         rgb_matrix_set_color(80, RGB_RED);
     }
 
-    if ((get_oneshot_mods() & MOD_MASK_GUI) &&
+    if ((get_oneshot_mods() & MOD_MASK_ALT) &&
         !has_oneshot_mods_timed_out()) {
         rgb_matrix_set_color(77, RGB_RED);
     }
