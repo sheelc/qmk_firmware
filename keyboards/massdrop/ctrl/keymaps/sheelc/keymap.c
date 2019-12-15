@@ -126,3 +126,41 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return true; //Process all other keycodes normally
     }
 }
+
+void reset_random_color(int i) {
+    HSV hsv = {rand() & 0xFF, rand() & 0xFF, rgb_matrix_config.hsv.v};
+    RGB rgb = hsv_to_rgb(hsv);
+    rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
+}
+
+void oneshot_mods_changed_user(uint8_t mods) {
+    if (mods & MOD_MASK_SHIFT) {
+        rgb_matrix_set_color(63, RGB_RED);
+        rgb_matrix_set_color(74, RGB_RED);
+    } else {
+        reset_random_color(63);
+        reset_random_color(74);
+    }
+
+    if (mods & MOD_MASK_CTRL) {
+        rgb_matrix_set_color(76, RGB_RED);
+        rgb_matrix_set_color(83, RGB_RED);
+    } else {
+        reset_random_color(76);
+        reset_random_color(83);
+    }
+
+    if (mods & MOD_MASK_ALT) {
+        rgb_matrix_set_color(78, RGB_RED);
+        rgb_matrix_set_color(80, RGB_RED);
+    } else {
+        reset_random_color(78);
+        reset_random_color(80);
+    }
+
+    if (mods & MOD_MASK_GUI) {
+        rgb_matrix_set_color(77, RGB_RED);
+    } else {
+        reset_random_color(77);
+    }
+}
