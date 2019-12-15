@@ -152,9 +152,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case LIN_SW_WIN:
             if (record->event.pressed) {
-                register_code(KC_LGUI);
+                register_code(KC_LALT);
                 tap_code(KC_GRV);
-                unregister_code(KC_LGUI);
+                unregister_code(KC_LALT);
             }
             break;
         case LIN_PREV_TAB:
