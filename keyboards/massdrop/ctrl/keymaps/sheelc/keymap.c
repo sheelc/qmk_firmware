@@ -14,27 +14,13 @@ enum ctrl_keycodes {
     DBG_KBD,               //DEBUG Toggle Keyboard Prints
     DBG_MOU,               //DEBUG Toggle Mouse Prints
     MD_BOOT,               //Restart into bootloader after hold timeout
-    LIN_SW_APP,            //Linux Switch Apps
-    LIN_SW_WIN,            //Linux Switch Windows
-    LIN_PREV_TAB,          //Linux Prev Tab
-    LIN_NEXT_TAB,          //Linux Next Tab
-    LIN_CLOSE_WIN,         //Linux Close Window
-    LIN_COPY,              //Linux Copy
-    LIN_PASTE,             //Linux Paste
-    MAC_SW_APP,            //Mac Switch Apps
-    MAC_SW_WIN,            //Mac Switch Windows
-    MAC_PREV_TAB,          //Mac Prev Tab
-    MAC_NEXT_TAB,          //Mac Next Tab
-    MAC_CLOSE_WIN,         //Mac Close Window
-    MAC_COPY,              //Mac Copy
-    MAC_PASTE,             //Mac Paste
 };
 
 keymap_config_t keymap_config;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_LIN_QWERTY] = LAYOUT(
-        KC_ESC,        KC_F1,         LIN_COPY,      LIN_PASTE,   LIN_CLOSE_WIN,   LIN_PREV_TAB,   LIN_NEXT_TAB,   LIN_SW_APP,   LIN_SW_WIN,   KC_F9,         KC_F10,   KC_F11,        KC_F12,             KC_PSCR, KC_SLCK, KC_PAUS, \
+        KC_ESC,        KC_F1,         C(KC_C),       C(KC_V), C(KC_F4), C(KC_PGUP), C(KC_PGDN),   C(KC_TAB),   A(KC_GRV),   KC_F9,         KC_F10,   KC_F11,        KC_F12,             KC_PSCR, KC_SLCK, KC_PAUS, \
         KC_GRV,        KC_1,          KC_2,          KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,          KC_0,     KC_MINS,       KC_EQL,  KC_BSPC,   KC_INS,  KC_HOME, KC_PGUP, \
         KC_TAB,        KC_Q,          KC_W,          KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,          KC_P,     KC_LBRC,       KC_RBRC, KC_BSLS,   KC_DEL,  KC_END,  KC_PGDN, \
         KC_CAPS,       KC_A,          KC_S,          KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,          KC_SCLN,  KC_QUOT,       KC_ENT, \
@@ -42,7 +28,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         OSM(MOD_LCTL), OSM(MOD_LALT), OSM(MOD_LCTL),                   KC_SPC,                             OSM(MOD_RCTL), MO(_FNC), KC_APP,        OSM(MOD_RCTL),      KC_LEFT, KC_DOWN, KC_RGHT \
     ),
     [_MAC_QWERTY] = LAYOUT(
-        KC_ESC,        KC_F1,         MAC_COPY,      MAC_PASTE,   MAC_CLOSE_WIN,   MAC_PREV_TAB,   MAC_NEXT_TAB,   MAC_SW_APP,   MAC_SW_WIN,   KC_F9,         KC_F10,   KC_F11,        KC_F12,             KC_PSCR, KC_SLCK, KC_PAUS, \
+        KC_ESC,        KC_F1,         G(KC_C),       G(KC_V),   G(KC_W),   G(S(KC_LBRC)),   G(S(KC_RBRC)),   G(KC_TAB),   G(KC_GRV),   KC_F9,         KC_F10,   KC_F11,        KC_F12,             KC_PSCR, KC_SLCK, KC_PAUS, \
         KC_GRV,        KC_1,          KC_2,          KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,          KC_0,     KC_MINS,       KC_EQL,  KC_BSPC,   KC_INS,  KC_HOME, KC_PGUP, \
         KC_TAB,        KC_Q,          KC_W,          KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,          KC_P,     KC_LBRC,       KC_RBRC, KC_BSLS,   KC_DEL,  KC_END,  KC_PGDN, \
         KC_CAPS,       KC_A,          KC_S,          KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,          KC_SCLN,  KC_QUOT,       KC_ENT, \
@@ -150,108 +136,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               }
             }
             return false;
-        case LIN_SW_APP:
-            if (record->event.pressed) {
-                register_code(KC_LCTL);
-                tap_code(KC_TAB);
-                unregister_code(KC_LCTL);
-            }
-            break;
-        case LIN_SW_WIN:
-            if (record->event.pressed) {
-                register_code(KC_LALT);
-                tap_code(KC_GRV);
-                unregister_code(KC_LALT);
-            }
-            break;
-        case LIN_PREV_TAB:
-            if (record->event.pressed) {
-                register_code(KC_LCTL);
-                tap_code(KC_PGUP);
-                unregister_code(KC_LCTL);
-            }
-            break;
-        case LIN_NEXT_TAB:
-            if (record->event.pressed) {
-                register_code(KC_LCTL);
-                tap_code(KC_PGDN);
-                unregister_code(KC_LCTL);
-            }
-            break;
-        case LIN_CLOSE_WIN:
-            if (record->event.pressed) {
-                register_code(KC_LCTL);
-                tap_code(KC_F4);
-                unregister_code(KC_LCTL);
-            }
-            break;
-        case LIN_COPY:
-            if (record->event.pressed) {
-                register_code(KC_LCTL);
-                tap_code(KC_C);
-                unregister_code(KC_LCTL);
-            }
-            break;
-        case LIN_PASTE:
-            if (record->event.pressed) {
-                register_code(KC_LCTL);
-                tap_code(KC_V);
-                unregister_code(KC_LCTL);
-            }
-            break;
-        case MAC_SW_APP:
-            if (record->event.pressed) {
-                register_code(KC_LGUI);
-                tap_code(KC_TAB);
-                unregister_code(KC_LGUI);
-            }
-            break;
-        case MAC_SW_WIN:
-            if (record->event.pressed) {
-                register_code(KC_LGUI);
-                tap_code(KC_GRV);
-                unregister_code(KC_LGUI);
-            }
-            break;
-        case MAC_PREV_TAB:
-            if (record->event.pressed) {
-                register_code(KC_LGUI);
-                register_code(KC_LSHIFT);
-                tap_code(KC_LBRACKET);
-                unregister_code(KC_LSHIFT);
-                unregister_code(KC_LGUI);
-            }
-            break;
-        case MAC_NEXT_TAB:
-            if (record->event.pressed) {
-                register_code(KC_LGUI);
-                register_code(KC_LSHIFT);
-                tap_code(KC_RBRACKET);
-                unregister_code(KC_LSHIFT);
-                unregister_code(KC_LGUI);
-            }
-            break;
-        case MAC_CLOSE_WIN:
-            if (record->event.pressed) {
-                register_code(KC_LGUI);
-                tap_code(KC_W);
-                unregister_code(KC_LGUI);
-            }
-            break;
-        case MAC_COPY:
-            if (record->event.pressed) {
-                register_code(KC_LGUI);
-                tap_code(KC_C);
-                unregister_code(KC_LGUI);
-            }
-            break;
-        case MAC_PASTE:
-            if (record->event.pressed) {
-                register_code(KC_LGUI);
-                tap_code(KC_V);
-                unregister_code(KC_LGUI);
-            }
-            break;
         default:
             return true; //Process all other keycodes normally
     }
@@ -266,6 +150,15 @@ void reset_random_color(int i) {
 }
 
 void oneshot_mods_changed_user(uint8_t mods) {
+    if (g_suspend_state || !rgb_matrix_config.enable) {
+        return;
+    }
+
+    if (!(rgb_matrix_get_flags() == LED_FLAG_ALL ||
+          rgb_matrix_get_flags() == LED_FLAG_KEYLIGHT)) {
+        return;
+    }
+
     bool mac_layer_on = layer_state_cmp(layer_state, _MAC_QWERTY);
     if (mods & MOD_MASK_SHIFT) {
         rgb_matrix_set_color(63, RGB_RED);
@@ -309,6 +202,15 @@ void oneshot_mods_changed_user(uint8_t mods) {
 }
 
 void rgb_matrix_indicators_user(void) {
+    if (g_suspend_state || !rgb_matrix_config.enable) {
+        return;
+    }
+
+    if (!(rgb_matrix_get_flags() == LED_FLAG_ALL ||
+          rgb_matrix_get_flags() == LED_FLAG_KEYLIGHT)) {
+        return;
+    }
+
     static bool clearedBoard = false;
     uint8_t layer = biton32(layer_state);
     bool mac_layer_on = layer_state_cmp(layer_state, _MAC_QWERTY);
