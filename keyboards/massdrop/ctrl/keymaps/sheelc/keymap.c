@@ -263,18 +263,18 @@ void rgb_matrix_indicators_user(void) {
     case _FNC:
         clearedBoard = true;
         rgb_matrix_set_color_all(0, 0, 0);
-        rgb_matrix_set_color(1, RGB_BLUE); // F1
-        rgb_matrix_set_color(2, RGB_BLUE); // F2
-        rgb_matrix_set_color(3, RGB_BLUE); // F3
-        rgb_matrix_set_color(4, RGB_BLUE); // F4
-        rgb_matrix_set_color(5, RGB_BLUE); // F5
-        rgb_matrix_set_color(6, RGB_BLUE); // F6
-        rgb_matrix_set_color(7, RGB_BLUE); // F7
-        rgb_matrix_set_color(8, RGB_BLUE); // F8
-        rgb_matrix_set_color(9, RGB_BLUE); // F9
-        rgb_matrix_set_color(10, RGB_BLUE); // F10
-        rgb_matrix_set_color(11, RGB_BLUE); // F11
-        rgb_matrix_set_color(12, RGB_BLUE); // F12
+        rgb_matrix_set_color(1, RGB_MAGENTA); // F1
+        rgb_matrix_set_color(2, RGB_MAGENTA); // F2
+        rgb_matrix_set_color(3, RGB_MAGENTA); // F3
+        rgb_matrix_set_color(4, RGB_MAGENTA); // F4
+        rgb_matrix_set_color(5, RGB_MAGENTA); // F5
+        rgb_matrix_set_color(6, RGB_MAGENTA); // F6
+        rgb_matrix_set_color(7, RGB_MAGENTA); // F7
+        rgb_matrix_set_color(8, RGB_MAGENTA); // F8
+        rgb_matrix_set_color(9, RGB_MAGENTA); // F9
+        rgb_matrix_set_color(10, RGB_MAGENTA); // F10
+        rgb_matrix_set_color(11, RGB_MAGENTA); // F11
+        rgb_matrix_set_color(12, RGB_MAGENTA); // F12
         rgb_matrix_set_color(13, RGB_RED); // Mute
         if (mac_layer_on) {
             rgb_matrix_set_color(17, RGB_RED); // Number 1
