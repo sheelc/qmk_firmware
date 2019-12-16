@@ -3,6 +3,7 @@
 enum ctrl_layers {
     _LIN_QWERTY = 0,
     _MAC_QWERTY,
+    _TAP,
     _FNC
 };
 
@@ -16,7 +17,31 @@ enum ctrl_keycodes {
     MD_BOOT,               //Restart into bootloader after hold timeout
 };
 
+enum td_keycodes {
+    TD_GRVS = 0,
+    TD_LPAR,
+    TD_RPAR,
+    TD_LBRC,
+    TD_RBRC,
+    TD_QUOT,
+    TD_COMMA,
+    TD_DOT,
+    TD_SLSH
+};
+
 keymap_config_t keymap_config;
+
+qk_tap_dance_action_t tap_dance_actions[] = {
+    [TD_GRVS] = ACTION_TAP_DANCE_DOUBLE(KC_GRV, S(KC_GRV)),
+    [TD_LPAR] = ACTION_TAP_DANCE_DOUBLE(KC_9, S(KC_9)),
+    [TD_RPAR] = ACTION_TAP_DANCE_DOUBLE(KC_0, S(KC_0)),
+    [TD_LBRC] = ACTION_TAP_DANCE_DOUBLE(KC_LBRC, S(KC_LBRC)),
+    [TD_RBRC] = ACTION_TAP_DANCE_DOUBLE(KC_RBRC, S(KC_RBRC)),
+    [TD_QUOT] = ACTION_TAP_DANCE_DOUBLE(KC_QUOT, S(KC_QUOT)),
+    [TD_COMMA] = ACTION_TAP_DANCE_DOUBLE(KC_COMM, S(KC_COMM)),
+    [TD_DOT] = ACTION_TAP_DANCE_DOUBLE(KC_DOT, S(KC_DOT)),
+    [TD_SLSH] = ACTION_TAP_DANCE_DOUBLE(KC_SLSH, S(KC_SLSH)),
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_LIN_QWERTY] = LAYOUT(
@@ -35,13 +60,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         OSM(MOD_LSFT), KC_Z,          KC_X,          KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,        KC_SLSH,  OSM(MOD_RSFT),                              KC_UP, \
         OSM(MOD_LCTL), OSM(MOD_LALT), OSM(MOD_LGUI),                   KC_SPC,                             OSM(MOD_RGUI), MO(_FNC), KC_APP,        OSM(MOD_RCTL),      KC_LEFT, KC_DOWN, KC_RGHT \
     ),
-    [_FNC] = LAYOUT(
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,            KC_MUTE, _______, _______, \
-        _______, TG(_MAC_QWERTY), _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,   KC_MPLY, KC_MSTP, KC_VOLU, \
-        _______, RGB_SPD, RGB_VAI, RGB_SPI, RGB_HUI, RGB_SAI, _______, U_T_AUTO,U_T_AGCR,_______, _______, _______, _______, _______,   KC_MPRV, KC_MNXT, KC_VOLD, \
-        _______, RGB_RMOD,RGB_VAD, RGB_MOD, RGB_HUD, RGB_SAD, _______, _______, _______, _______, _______, _______, _______, \
-        _______, RGB_TOG, _______, _______, _______, MD_BOOT, NK_TOGG, _______, _______, _______, _______, _______,                              _______, \
+    [_TAP] = LAYOUT(
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,            _______, _______, _______, \
+        TD(TD_GRVS), _______, _______, _______, _______, _______, _______, _______, _______, TD(TD_LPAR), TD(TD_RPAR), _______, _______, _______,   _______, _______, _______, \
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, TD(TD_LBRC), TD(TD_RBRC), _______,   _______, _______, _______, \
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, TD(TD_QUOT), _______, \
+        _______, _______, _______, _______, _______, _______, _______, _______, TD(TD_COMMA), TD(TD_DOT), TD(TD_SLSH), _______,                              _______, \
         _______, _______, _______,                   _______,                            _______, _______, _______, _______,            _______, _______, _______ \
+    ),
+    [_FNC] = LAYOUT(
+        _______, KC_F1,   KC_F2,   KC_F3,    KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,            KC_MUTE, _______, _______, \
+        _______, TG(_MAC_QWERTY),  TG(_TAP), _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,   KC_MPLY, KC_MSTP, KC_VOLU, \
+        _______, RGB_SPD, RGB_VAI, RGB_SPI,  RGB_HUI, RGB_SAI, _______, U_T_AUTO,U_T_AGCR,_______, _______, _______, _______, _______,   KC_MPRV, KC_MNXT, KC_VOLD, \
+        _______, RGB_RMOD,RGB_VAD, RGB_MOD,  RGB_HUD, RGB_SAD, _______, _______, _______, _______, _______, _______, _______, \
+        _______, RGB_TOG, _______, _______,  _______, MD_BOOT, NK_TOGG, _______, _______, _______, _______, _______,                              _______, \
+        _______, _______, _______,                    _______,                            _______, _______, _______, _______,            _______, _______, _______ \
     ),
     /*
     [X] = LAYOUT(
@@ -214,10 +247,12 @@ void rgb_matrix_indicators_user(void) {
     static bool clearedBoard = false;
     uint8_t layer = biton32(layer_state);
     bool mac_layer_on = layer_state_cmp(layer_state, _MAC_QWERTY);
+    bool tap_layer_on = layer_state_cmp(layer_state, _TAP);
 
     switch (layer) {
     case _LIN_QWERTY:
     case _MAC_QWERTY:
+    case _TAP:
         if (clearedBoard) {
             clearedBoard = false;
             for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
@@ -228,6 +263,18 @@ void rgb_matrix_indicators_user(void) {
     case _FNC:
         clearedBoard = true;
         rgb_matrix_set_color_all(0, 0, 0);
+        rgb_matrix_set_color(1, RGB_BLUE); // F1
+        rgb_matrix_set_color(2, RGB_BLUE); // F2
+        rgb_matrix_set_color(3, RGB_BLUE); // F3
+        rgb_matrix_set_color(4, RGB_BLUE); // F4
+        rgb_matrix_set_color(5, RGB_BLUE); // F5
+        rgb_matrix_set_color(6, RGB_BLUE); // F6
+        rgb_matrix_set_color(7, RGB_BLUE); // F7
+        rgb_matrix_set_color(8, RGB_BLUE); // F8
+        rgb_matrix_set_color(9, RGB_BLUE); // F9
+        rgb_matrix_set_color(10, RGB_BLUE); // F10
+        rgb_matrix_set_color(11, RGB_BLUE); // F11
+        rgb_matrix_set_color(12, RGB_BLUE); // F12
         rgb_matrix_set_color(13, RGB_RED); // Mute
         if (mac_layer_on) {
             rgb_matrix_set_color(17, RGB_RED); // Number 1
@@ -235,9 +282,20 @@ void rgb_matrix_indicators_user(void) {
             rgb_matrix_set_color(17, RGB_GREEN);
         }
 
+        if (tap_layer_on) {
+            rgb_matrix_set_color(18, RGB_RED); // Number 2
+        } else {
+            rgb_matrix_set_color(18, RGB_GREEN);
+        }
+
         rgb_matrix_set_color(30, RGB_GREEN); // Ins
         rgb_matrix_set_color(31, RGB_GREEN); // Home
         rgb_matrix_set_color(32, RGB_GREEN); // PageUp
+        rgb_matrix_set_color(47, RGB_GREEN); // Del
+        rgb_matrix_set_color(48, RGB_GREEN); // End
+        rgb_matrix_set_color(49, RGB_GREEN); // PageDn
+        rgb_matrix_set_color(51, RGB_PURPLE); // A
+        rgb_matrix_set_color(64, RGB_PURPLE); // Z
         rgb_matrix_set_color(68, RGB_GOLD); // B
         return;
     }
