@@ -263,7 +263,7 @@ void rgb_matrix_indicators_user(void) {
         return;
     }
 
-    static bool clearedBoard = false;
+    static bool cleared_board = false;
     uint8_t layer = biton32(layer_state);
     bool mac_layer_on = layer_state_cmp(layer_state, _MAC_QWERTY);
     bool tap_layer_on = layer_state_cmp(layer_state, _TAP);
@@ -272,14 +272,14 @@ void rgb_matrix_indicators_user(void) {
     case _LIN_QWERTY:
     case _MAC_QWERTY:
     case _TAP:
-        if (clearedBoard) {
-            clearedBoard = false;
+        if (cleared_board) {
+            cleared_board = false;
             reset_lights();
         }
         break;
     case _FNC:
         if (keylights_enabled()) {
-            clearedBoard = true;
+            cleared_board = true;
             rgb_matrix_set_color_all(0, 0, 0);
             rgb_matrix_set_color(1, RGB_MAGENTA); // F1
             rgb_matrix_set_color(2, RGB_MAGENTA); // F2
