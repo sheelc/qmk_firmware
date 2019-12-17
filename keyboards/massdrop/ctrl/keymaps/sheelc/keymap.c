@@ -182,13 +182,13 @@ void reset_random_color(int i) {
     rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
 }
 
-void oneshot_mods_changed_user(uint8_t mods) {
-    if (g_suspend_state || !rgb_matrix_config.enable) {
-        return;
-    }
+bool keylights_enabled(void) {
+    return !(rgb_matrix_get_flags() == LED_FLAG_NONE ||
+             rgb_matrix_get_flags() == LED_FLAG_UNDERGLOW);
+}
 
-    if (!(rgb_matrix_get_flags() == LED_FLAG_ALL ||
-          rgb_matrix_get_flags() == LED_FLAG_KEYLIGHT)) {
+void oneshot_mods_changed_user(uint8_t mods) {
+    if (g_suspend_state || !rgb_matrix_config.enable || !keylights_enabled()) {
         return;
     }
 
@@ -234,13 +234,32 @@ void oneshot_mods_changed_user(uint8_t mods) {
     }
 }
 
-void rgb_matrix_indicators_user(void) {
-    if (g_suspend_state || !rgb_matrix_config.enable) {
-        return;
+void reset_lights(void) {
+    switch(rgb_matrix_get_flags()) {
+    case LED_FLAG_NONE:
+        break;
+    case LED_FLAG_UNDERGLOW:
+        for (int i = 0; i < UNDERGLOW_LIGHT_INDEX; i++) {
+            rgb_matrix_set_color(i, 0, 0, 0);
+        }
+        for (int i = UNDERGLOW_LIGHT_INDEX; i < DRIVER_LED_TOTAL; i++) {
+            reset_random_color(i);
+        }
+        break;
+    case LED_FLAG_KEYLIGHT | LED_FLAG_MODIFIER:
+        for (int i = 0; i < UNDERGLOW_LIGHT_INDEX; i++) {
+            reset_random_color(i);
+        }
+        break;
+    case LED_FLAG_ALL:
+        for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
+            reset_random_color(i);
+        }
     }
+}
 
-    if (!(rgb_matrix_get_flags() == LED_FLAG_ALL ||
-          rgb_matrix_get_flags() == LED_FLAG_KEYLIGHT)) {
+void rgb_matrix_indicators_user(void) {
+    if (g_suspend_state || !rgb_matrix_config.enable || rgb_matrix_get_flags() == LED_FLAG_NONE) {
         return;
     }
 
@@ -255,76 +274,78 @@ void rgb_matrix_indicators_user(void) {
     case _TAP:
         if (clearedBoard) {
             clearedBoard = false;
-            for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
-                reset_random_color(i);
-            }
+            reset_lights();
         }
         break;
     case _FNC:
-        clearedBoard = true;
-        rgb_matrix_set_color_all(0, 0, 0);
-        rgb_matrix_set_color(1, RGB_MAGENTA); // F1
-        rgb_matrix_set_color(2, RGB_MAGENTA); // F2
-        rgb_matrix_set_color(3, RGB_MAGENTA); // F3
-        rgb_matrix_set_color(4, RGB_MAGENTA); // F4
-        rgb_matrix_set_color(5, RGB_MAGENTA); // F5
-        rgb_matrix_set_color(6, RGB_MAGENTA); // F6
-        rgb_matrix_set_color(7, RGB_MAGENTA); // F7
-        rgb_matrix_set_color(8, RGB_MAGENTA); // F8
-        rgb_matrix_set_color(9, RGB_MAGENTA); // F9
-        rgb_matrix_set_color(10, RGB_MAGENTA); // F10
-        rgb_matrix_set_color(11, RGB_MAGENTA); // F11
-        rgb_matrix_set_color(12, RGB_MAGENTA); // F12
-        rgb_matrix_set_color(13, RGB_RED); // Mute
-        if (mac_layer_on) {
-            rgb_matrix_set_color(17, RGB_RED); // Number 1
-        } else {
-            rgb_matrix_set_color(17, RGB_GREEN);
-        }
+        if (keylights_enabled()) {
+            clearedBoard = true;
+            rgb_matrix_set_color_all(0, 0, 0);
+            rgb_matrix_set_color(1, RGB_MAGENTA); // F1
+            rgb_matrix_set_color(2, RGB_MAGENTA); // F2
+            rgb_matrix_set_color(3, RGB_MAGENTA); // F3
+            rgb_matrix_set_color(4, RGB_MAGENTA); // F4
+            rgb_matrix_set_color(5, RGB_MAGENTA); // F5
+            rgb_matrix_set_color(6, RGB_MAGENTA); // F6
+            rgb_matrix_set_color(7, RGB_MAGENTA); // F7
+            rgb_matrix_set_color(8, RGB_MAGENTA); // F8
+            rgb_matrix_set_color(9, RGB_MAGENTA); // F9
+            rgb_matrix_set_color(10, RGB_MAGENTA); // F10
+            rgb_matrix_set_color(11, RGB_MAGENTA); // F11
+            rgb_matrix_set_color(12, RGB_MAGENTA); // F12
+            rgb_matrix_set_color(13, RGB_RED); // Mute
+            if (mac_layer_on) {
+                rgb_matrix_set_color(17, RGB_RED); // Number 1
+            } else {
+                rgb_matrix_set_color(17, RGB_GREEN);
+            }
 
-        if (tap_layer_on) {
-            rgb_matrix_set_color(18, RGB_RED); // Number 2
-        } else {
-            rgb_matrix_set_color(18, RGB_GREEN);
-        }
+            if (tap_layer_on) {
+                rgb_matrix_set_color(18, RGB_RED); // Number 2
+            } else {
+                rgb_matrix_set_color(18, RGB_GREEN);
+            }
 
-        rgb_matrix_set_color(30, RGB_GREEN); // Ins
-        rgb_matrix_set_color(31, RGB_GREEN); // Home
-        rgb_matrix_set_color(32, RGB_GREEN); // PageUp
-        rgb_matrix_set_color(47, RGB_GREEN); // Del
-        rgb_matrix_set_color(48, RGB_GREEN); // End
-        rgb_matrix_set_color(49, RGB_GREEN); // PageDn
-        rgb_matrix_set_color(51, RGB_PURPLE); // A
-        rgb_matrix_set_color(64, RGB_PURPLE); // Z
-        rgb_matrix_set_color(68, RGB_GOLD); // B
+            rgb_matrix_set_color(30, RGB_GREEN); // Ins
+            rgb_matrix_set_color(31, RGB_GREEN); // Home
+            rgb_matrix_set_color(32, RGB_GREEN); // PageUp
+            rgb_matrix_set_color(47, RGB_GREEN); // Del
+            rgb_matrix_set_color(48, RGB_GREEN); // End
+            rgb_matrix_set_color(49, RGB_GREEN); // PageDn
+            rgb_matrix_set_color(51, RGB_PURPLE); // A
+            rgb_matrix_set_color(64, RGB_PURPLE); // Z
+            rgb_matrix_set_color(68, RGB_GOLD); // B
+        }
         return;
     }
 
-    if ((get_oneshot_mods() & MOD_MASK_SHIFT) &&
-        !has_oneshot_mods_timed_out()) {
-        rgb_matrix_set_color(63, RGB_RED);
-        rgb_matrix_set_color(74, RGB_RED);
-    }
-
-    if ((get_oneshot_mods() & MOD_MASK_CTRL) &&
-        !has_oneshot_mods_timed_out()) {
-        rgb_matrix_set_color(76, RGB_RED);
-        rgb_matrix_set_color(83, RGB_RED);
-        if (!mac_layer_on) {
-          rgb_matrix_set_color(78, RGB_RED);
-          rgb_matrix_set_color(80, RGB_RED);
+    if (keylights_enabled()) {
+        if ((get_oneshot_mods() & MOD_MASK_SHIFT) &&
+            !has_oneshot_mods_timed_out()) {
+            rgb_matrix_set_color(63, RGB_RED);
+            rgb_matrix_set_color(74, RGB_RED);
         }
-    }
 
-    if ((get_oneshot_mods() & MOD_MASK_ALT) &&
-        !has_oneshot_mods_timed_out()) {
-        rgb_matrix_set_color(77, RGB_RED);
-    }
+        if ((get_oneshot_mods() & MOD_MASK_CTRL) &&
+            !has_oneshot_mods_timed_out()) {
+            rgb_matrix_set_color(76, RGB_RED);
+            rgb_matrix_set_color(83, RGB_RED);
+            if (!mac_layer_on) {
+                rgb_matrix_set_color(78, RGB_RED);
+                rgb_matrix_set_color(80, RGB_RED);
+            }
+        }
 
-    if (mac_layer_on &&
-        (get_oneshot_mods() & MOD_MASK_GUI) &&
-        !has_oneshot_mods_timed_out()) {
-        rgb_matrix_set_color(78, RGB_RED);
-        rgb_matrix_set_color(80, RGB_RED);
+        if ((get_oneshot_mods() & MOD_MASK_ALT) &&
+            !has_oneshot_mods_timed_out()) {
+            rgb_matrix_set_color(77, RGB_RED);
+        }
+
+        if (mac_layer_on &&
+            (get_oneshot_mods() & MOD_MASK_GUI) &&
+            !has_oneshot_mods_timed_out()) {
+            rgb_matrix_set_color(78, RGB_RED);
+            rgb_matrix_set_color(80, RGB_RED);
+        }
     }
 }
