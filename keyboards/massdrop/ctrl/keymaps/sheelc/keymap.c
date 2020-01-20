@@ -21,8 +21,10 @@ enum td_keycodes {
     TD_GRVS = 0,
     TD_LPAR,
     TD_RPAR,
+    TD_MINS,
     TD_LBRC,
     TD_RBRC,
+    TD_SCLN,
     TD_QUOT,
     TD_COMMA,
     TD_DOT,
@@ -35,8 +37,10 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_GRVS] = ACTION_TAP_DANCE_DOUBLE(KC_GRV, S(KC_GRV)),
     [TD_LPAR] = ACTION_TAP_DANCE_DOUBLE(KC_9, S(KC_9)),
     [TD_RPAR] = ACTION_TAP_DANCE_DOUBLE(KC_0, S(KC_0)),
+    [TD_MINS] = ACTION_TAP_DANCE_DOUBLE(KC_MINS, S(KC_MINS)),
     [TD_LBRC] = ACTION_TAP_DANCE_DOUBLE(KC_LBRC, S(KC_LBRC)),
     [TD_RBRC] = ACTION_TAP_DANCE_DOUBLE(KC_RBRC, S(KC_RBRC)),
+    [TD_SCLN] = ACTION_TAP_DANCE_DOUBLE(KC_SCLN, S(KC_SCLN)),
     [TD_QUOT] = ACTION_TAP_DANCE_DOUBLE(KC_QUOT, S(KC_QUOT)),
     [TD_COMMA] = ACTION_TAP_DANCE_DOUBLE(KC_COMM, S(KC_COMM)),
     [TD_DOT] = ACTION_TAP_DANCE_DOUBLE(KC_DOT, S(KC_DOT)),
@@ -62,9 +66,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_TAP] = LAYOUT(
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,            _______, _______, _______, \
-        TD(TD_GRVS), _______, _______, _______, _______, _______, _______, _______, _______, TD(TD_LPAR), TD(TD_RPAR), _______, _______, _______,   _______, _______, _______, \
+        TD(TD_GRVS), _______, _______, _______, _______, _______, _______, _______, _______, TD(TD_LPAR), TD(TD_RPAR), TD(TD_MINS), _______, _______,   _______, _______, _______, \
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, TD(TD_LBRC), TD(TD_RBRC), _______,   _______, _______, _______, \
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, TD(TD_QUOT), _______, \
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, TD(TD_SCLN), TD(TD_QUOT), _______, \
         _______, _______, _______, _______, _______, _______, _______, _______, TD(TD_COMMA), TD(TD_DOT), TD(TD_SLSH), _______,                              _______, \
         _______, _______, _______,                   _______,                            _______, _______, _______, _______,            _______, _______, _______ \
     ),
