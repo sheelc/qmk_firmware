@@ -18,8 +18,7 @@ enum ctrl_keycodes {
 };
 
 enum td_keycodes {
-    TD_GRVS = 0,
-    TD_LPAR,
+    TD_LPAR = 0,
     TD_RPAR,
     TD_MINS,
     TD_LBRC,
@@ -34,7 +33,6 @@ enum td_keycodes {
 keymap_config_t keymap_config;
 
 qk_tap_dance_action_t tap_dance_actions[] = {
-    [TD_GRVS] = ACTION_TAP_DANCE_DOUBLE(KC_GRV, S(KC_GRV)),
     [TD_LPAR] = ACTION_TAP_DANCE_DOUBLE(KC_9, S(KC_9)),
     [TD_RPAR] = ACTION_TAP_DANCE_DOUBLE(KC_0, S(KC_0)),
     [TD_MINS] = ACTION_TAP_DANCE_DOUBLE(KC_MINS, S(KC_MINS)),
@@ -66,7 +64,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_TAP] = LAYOUT(
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,            _______, _______, _______, \
-        TD(TD_GRVS), _______, _______, _______, _______, _______, _______, _______, _______, TD(TD_LPAR), TD(TD_RPAR), TD(TD_MINS), _______, _______,   _______, _______, _______, \
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, TD(TD_LPAR), TD(TD_RPAR), TD(TD_MINS), _______, _______,   _______, _______, _______, \
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, TD(TD_LBRC), TD(TD_RBRC), _______,   _______, _______, _______, \
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, TD(TD_SCLN), TD(TD_QUOT), _______, \
         _______, _______, _______, _______, _______, _______, _______, _______, TD(TD_COMMA), TD(TD_DOT), TD(TD_SLSH), _______,                              _______, \
