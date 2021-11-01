@@ -190,7 +190,7 @@ bool keylights_enabled(void) {
 }
 
 void oneshot_mods_changed_user(uint8_t mods) {
-    if (g_suspend_state || !rgb_matrix_config.enable || !keylights_enabled()) {
+    if (rgb_matrix_get_suspend_state() || !rgb_matrix_config.enable || !keylights_enabled()) {
         return;
     }
 
@@ -261,7 +261,7 @@ void reset_lights(void) {
 }
 
 void rgb_matrix_indicators_user(void) {
-    if (g_suspend_state || !rgb_matrix_config.enable || rgb_matrix_get_flags() == LED_FLAG_NONE) {
+    if (rgb_matrix_get_suspend_state() || !rgb_matrix_config.enable || rgb_matrix_get_flags() == LED_FLAG_NONE) {
         return;
     }
 
