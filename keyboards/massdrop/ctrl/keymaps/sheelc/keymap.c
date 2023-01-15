@@ -90,10 +90,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     */
 };
 
+void matrix_init_user(void) {
+#ifdef OFFICE_MODE
+    layer_on(_MAC_QWERTY);
+#endif
+}
+
 // Runs just one time when the keyboard initializes.
 void keyboard_post_init_user(void) {
     rgb_matrix_set_flags(LED_FLAG_KEYLIGHT | LED_FLAG_MODIFIER);
     rgb_matrix_set_color_all(0, 0, 0);
+#ifdef OFFICE_MODE
+    rgb_matrix_sethsv_noeeprom(HSV_AZURE);
+#endif
 };
 
 // Runs constantly in the background, in a loop.
