@@ -47,7 +47,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_LIN_QWERTY] = LAYOUT(
-        KC_ESC,        KC_F1,         C(KC_C),       C(KC_V), C(KC_F4), C(KC_PGUP), C(KC_PGDN),   C(KC_TAB),   A(KC_GRV),   KC_F9,         KC_F10,   KC_F11,        KC_F12,             KC_PSCR, KC_SLCK, KC_PAUS, \
+        KC_ESC,        KC_F1,         C(KC_C),       C(KC_V), C(KC_F4), C(KC_PGUP), C(KC_PGDN),   C(KC_TAB),   A(KC_GRV),   KC_F9,         KC_F10,   KC_F11,        KC_F12,             KC_PSCR, KC_SCRL, KC_PAUS, \
         KC_GRV,        KC_1,          KC_2,          KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,          KC_0,     KC_MINS,       KC_EQL,  KC_BSPC,   KC_INS,  KC_HOME, KC_PGUP, \
         KC_TAB,        KC_Q,          KC_W,          KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,          KC_P,     KC_LBRC,       KC_RBRC, KC_BSLS,   KC_DEL,  KC_END,  KC_PGDN, \
         KC_CAPS,       KC_A,          KC_S,          KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,          KC_SCLN,  KC_QUOT,       KC_ENT, \
@@ -55,7 +55,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         OSM(MOD_LCTL), OSM(MOD_LALT), OSM(MOD_LCTL),                   KC_SPC,                             OSM(MOD_RCTL), MO(_FNC), KC_APP,        OSM(MOD_RCTL),      KC_LEFT, KC_DOWN, KC_RGHT \
     ),
     [_MAC_QWERTY] = LAYOUT(
-        KC_ESC,        KC_F1,         G(KC_C),       G(KC_V),   G(KC_W),   G(S(KC_LBRC)),   G(S(KC_RBRC)),   G(KC_TAB),   G(KC_GRV),   KC_F9,         KC_F10,   KC_F11,        KC_F12,             KC_PSCR, KC_SLCK, KC_PAUS, \
+        KC_ESC,        KC_F1,         G(KC_C),       G(KC_V),   G(KC_W),   G(S(KC_LBRC)),   G(S(KC_RBRC)),   G(KC_TAB),   G(KC_GRV),   KC_F9,         KC_F10,   KC_F11,        KC_F12,             KC_PSCR, KC_SCRL, KC_PAUS, \
         KC_GRV,        KC_1,          KC_2,          KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,          KC_0,     KC_MINS,       KC_EQL,  KC_BSPC,   KC_INS,  KC_HOME, KC_PGUP, \
         KC_TAB,        KC_Q,          KC_W,          KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,          KC_P,     KC_LBRC,       KC_RBRC, KC_BSLS,   KC_DEL,  KC_END,  KC_PGDN, \
         KC_CAPS,       KC_A,          KC_S,          KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,          KC_SCLN,  KC_QUOT,       KC_ENT, \
@@ -244,7 +244,7 @@ void reset_lights(void) {
         for (int i = 0; i < UNDERGLOW_LIGHT_INDEX; i++) {
             rgb_matrix_set_color(i, 0, 0, 0);
         }
-        for (int i = UNDERGLOW_LIGHT_INDEX; i < DRIVER_LED_TOTAL; i++) {
+        for (int i = UNDERGLOW_LIGHT_INDEX; i < RGB_MATRIX_LED_COUNT; i++) {
             reset_random_color(i);
         }
         break;
@@ -254,15 +254,15 @@ void reset_lights(void) {
         }
         break;
     case LED_FLAG_ALL:
-        for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
+        for (int i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
             reset_random_color(i);
         }
     }
 }
 
-void rgb_matrix_indicators_user(void) {
+bool rgb_matrix_indicators_user(void) {
     if (rgb_matrix_get_suspend_state() || !rgb_matrix_config.enable || rgb_matrix_get_flags() == LED_FLAG_NONE) {
-        return;
+        return false;
     }
 
     static bool cleared_board = false;
@@ -318,7 +318,7 @@ void rgb_matrix_indicators_user(void) {
             rgb_matrix_set_color(64, RGB_PURPLE); // Z
             rgb_matrix_set_color(68, RGB_GOLD); // B
         }
-        return;
+        return false;
     }
 
     if (keylights_enabled()) {
@@ -350,4 +350,6 @@ void rgb_matrix_indicators_user(void) {
             rgb_matrix_set_color(80, RGB_RED);
         }
     }
+
+    return false;
 }
