@@ -50,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,        KC_F1,         C(KC_C),       C(KC_V), C(KC_F4), C(KC_PGUP), C(KC_PGDN),   C(KC_TAB),   A(KC_GRV),   KC_F9,         KC_F10,   KC_F11,        KC_F12,             KC_PSCR, KC_SCRL, KC_PAUS, \
         KC_GRV,        KC_1,          KC_2,          KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,          KC_0,     KC_MINS,       KC_EQL,  KC_BSPC,   KC_INS,  KC_HOME, KC_PGUP, \
         KC_TAB,        KC_Q,          KC_W,          KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,          KC_P,     KC_LBRC,       KC_RBRC, KC_BSLS,   KC_DEL,  KC_END,  KC_PGDN, \
-        KC_CAPS,       KC_A,          KC_S,          KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,          KC_SCLN,  KC_QUOT,       KC_ENT, \
+        CW_TOGG,       KC_A,          KC_S,          KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,          KC_SCLN,  KC_QUOT,       KC_ENT, \
         OSM(MOD_LSFT), KC_Z,          KC_X,          KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,        KC_SLSH,  OSM(MOD_RSFT),                              KC_UP, \
         OSM(MOD_LCTL), OSM(MOD_LALT), OSM(MOD_LCTL),                   KC_SPC,                             OSM(MOD_RCTL), MO(_FNC), KC_APP,        OSM(MOD_RCTL),      KC_LEFT, KC_DOWN, KC_RGHT \
     ),
@@ -58,7 +58,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,        KC_F1,         G(KC_C),       G(KC_V),   G(KC_W),   G(S(KC_LBRC)),   G(S(KC_RBRC)),   G(KC_TAB),   G(KC_GRV),   KC_F9,         KC_F10,   KC_F11,        KC_F12,             KC_PSCR, KC_SCRL, KC_PAUS, \
         KC_GRV,        KC_1,          KC_2,          KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,          KC_0,     KC_MINS,       KC_EQL,  KC_BSPC,   KC_INS,  KC_HOME, KC_PGUP, \
         KC_TAB,        KC_Q,          KC_W,          KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,          KC_P,     KC_LBRC,       KC_RBRC, KC_BSLS,   KC_DEL,  KC_END,  KC_PGDN, \
-        KC_CAPS,       KC_A,          KC_S,          KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,          KC_SCLN,  KC_QUOT,       KC_ENT, \
+        CW_TOGG,       KC_A,          KC_S,          KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,          KC_SCLN,  KC_QUOT,       KC_ENT, \
         OSM(MOD_LSFT), KC_Z,          KC_X,          KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,        KC_SLSH,  OSM(MOD_RSFT),                              KC_UP, \
         OSM(MOD_LCTL), OSM(MOD_LALT), OSM(MOD_LGUI),                   KC_SPC,                             OSM(MOD_RGUI), MO(_FNC), KC_APP,        OSM(MOD_RCTL),      KC_LEFT, KC_DOWN, KC_RGHT \
     ),
