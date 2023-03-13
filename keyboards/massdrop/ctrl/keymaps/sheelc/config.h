@@ -15,3 +15,8 @@
 #define FORCE_NKRO
 
 #define UNDERGLOW_LIGHT_INDEX 87
+
+// Mouse key speed and acceleration.
+#define MOUSEKEY_INTERVAL 8
+#define MOUSEKEY_MOVE_DELTA 32
+#define MOUSEKEY_MAX_SPEED 128

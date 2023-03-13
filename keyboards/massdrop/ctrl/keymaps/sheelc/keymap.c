@@ -4,7 +4,8 @@ enum ctrl_layers {
     _LIN_QWERTY = 0,
     _MAC_QWERTY,
     _TAP,
-    _FNC
+    _FNC,
+    _MOUSE,
 };
 
 enum ctrl_keycodes {
@@ -47,7 +48,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_LIN_QWERTY] = LAYOUT(
-        KC_ESC,        KC_F1,         C(KC_C),       C(KC_V), C(KC_F4), C(KC_PGUP), C(KC_PGDN),   C(KC_TAB),   A(KC_GRV),   KC_F9,         KC_F10,   KC_F11,        KC_F12,             KC_PSCR, KC_SCRL, KC_PAUS, \
+        KC_ESC,        TG(_MOUSE),       C(KC_C),       C(KC_V), C(KC_F4), C(KC_PGUP), C(KC_PGDN),   C(KC_TAB),   A(KC_GRV),   KC_F9,         KC_F10,   KC_F11,        KC_F12,             KC_PSCR, KC_SCRL, KC_PAUS, \
         KC_GRV,        KC_1,          KC_2,          KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,          KC_0,     KC_MINS,       KC_EQL,  KC_BSPC,   KC_INS,  KC_HOME, KC_PGUP, \
         KC_TAB,        KC_Q,          KC_W,          KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,          KC_P,     KC_LBRC,       KC_RBRC, KC_BSLS,   KC_DEL,  KC_END,  KC_PGDN, \
         CW_TOGG,       KC_A,          KC_S,          KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,          KC_SCLN,  KC_QUOT,       KC_ENT, \
@@ -55,7 +56,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         OSM(MOD_LCTL), OSM(MOD_LALT), OSM(MOD_LCTL),                   KC_SPC,                             OSM(MOD_RCTL), MO(_FNC), KC_APP,        OSM(MOD_RCTL),      KC_LEFT, KC_DOWN, KC_RGHT \
     ),
     [_MAC_QWERTY] = LAYOUT(
-        KC_ESC,        KC_F1,         G(KC_C),       G(KC_V),   G(KC_W),   G(S(KC_LBRC)),   G(S(KC_RBRC)),   G(KC_TAB),   G(KC_GRV),   KC_F9,         KC_F10,   KC_F11,        KC_F12,             KC_PSCR, KC_SCRL, KC_PAUS, \
+        KC_ESC,        TG(_MOUSE),       G(KC_C),       G(KC_V),   G(KC_W),   G(S(KC_LBRC)),   G(S(KC_RBRC)),   G(KC_TAB),   G(KC_GRV),   KC_F9,         KC_F10,   KC_F11,        KC_F12,             KC_PSCR, KC_SCRL, KC_PAUS, \
         KC_GRV,        KC_1,          KC_2,          KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,          KC_0,     KC_MINS,       KC_EQL,  KC_BSPC,   KC_INS,  KC_HOME, KC_PGUP, \
         KC_TAB,        KC_Q,          KC_W,          KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,          KC_P,     KC_LBRC,       KC_RBRC, KC_BSLS,   KC_DEL,  KC_END,  KC_PGDN, \
         CW_TOGG,       KC_A,          KC_S,          KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,          KC_SCLN,  KC_QUOT,       KC_ENT, \
@@ -77,6 +78,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, RGB_RMOD,RGB_VAD, RGB_MOD,  RGB_HUD, RGB_SAD, _______, _______, _______, _______, _______, _______, _______, \
         _______, RGB_TOG, _______, _______,  _______, MD_BOOT, NK_TOGG, _______, _______, _______, _______, _______,                              _______, \
         _______, _______, _______,                    _______,                            _______, _______, _______, _______,            _______, _______, _______ \
+    ),
+    [_MOUSE] = LAYOUT(
+        TG(_MOUSE), KC_F1,   KC_F2,   KC_F3,    KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,            XXXXXXX, XXXXXXX, XXXXXXX, \
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, \
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_BTN2, XXXXXXX, XXXXXXX, KC_WH_U, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, \
+        XXXXXXX, XXXXXXX, XXXXXXX, KC_WH_D, KC_BTN1, XXXXXXX, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, XXXXXXX, XXXXXXX, XXXXXXX, \
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                              XXXXXXX, \
+        XXXXXXX, XXXXXXX, XXXXXXX,                    XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,            XXXXXXX, XXXXXXX, XXXXXXX \
     ),
     /*
     [X] = LAYOUT(
