@@ -1,5 +1,11 @@
+# MCU name
+MCU = atmega32u4
+
 # Processor frequency
 F_CPU = 8000000
+
+# Bootloader selection
+BOOTLOADER = atmel-dfu
 
 # Build Options
 #   change yes to no to disable
@@ -19,6 +25,5 @@ MOUSEKEY_ENABLE = yes       # Mouse keys
 ENCODER_ENABLE := no
 OPTS_DEF += -DENCODER_ENABLE
 
-ANALOG_DRIVER_REQUIRED = yes
-
+QUANTUM_LIB_SRC += analog.c
 SRC += opt_encoder.c

@@ -90,7 +90,7 @@ TEST_F(CapsWord, OnOffToggleFuns) {
     caps_word_toggle();
     EXPECT_EQ(is_caps_word_on(), false);
 
-    VERIFY_AND_CLEAR(driver);
+    testing::Mock::VerifyAndClearExpectations(&driver);
 }
 
 // Tests the default `caps_word_press_user()` function.
@@ -133,7 +133,7 @@ TEST_F(CapsWord, CapswrdKey) {
     tap_key(key_capswrd); // Tap the QK_CAPS_WORD_TOGGLE key again.
     EXPECT_EQ(is_caps_word_on(), false);
 
-    VERIFY_AND_CLEAR(driver);
+    testing::Mock::VerifyAndClearExpectations(&driver);
 }
 
 // Tests that being idle for CAPS_WORD_IDLE_TIMEOUT turns off Caps Word.
@@ -157,7 +157,7 @@ TEST_F(CapsWord, IdleTimeout) {
     caps_word_on();
     tap_key(key_a);
 
-    VERIFY_AND_CLEAR(driver);
+    testing::Mock::VerifyAndClearExpectations(&driver);
 
     idle_for(CAPS_WORD_IDLE_TIMEOUT);
     run_one_scan_loop();
@@ -171,7 +171,7 @@ TEST_F(CapsWord, IdleTimeout) {
     EXPECT_REPORT(driver, (KC_A));
     tap_key(key_a);
 
-    VERIFY_AND_CLEAR(driver);
+    testing::Mock::VerifyAndClearExpectations(&driver);
 }
 
 // Tests that typing "A, 4, A, 4" produces "Shift+A, 4, Shift+A, 4".
@@ -201,7 +201,7 @@ TEST_F(CapsWord, ShiftsLettersButNotDigits) {
     caps_word_on();
     tap_keys(key_a, key_4, key_a, key_4);
 
-    VERIFY_AND_CLEAR(driver);
+    testing::Mock::VerifyAndClearExpectations(&driver);
 }
 
 // Tests that typing "A, Space, A" produces "Shift+A, Space, A".
@@ -230,7 +230,7 @@ TEST_F(CapsWord, SpaceTurnsOffCapsWord) {
     caps_word_on();
     tap_keys(key_a, key_spc, key_a);
 
-    VERIFY_AND_CLEAR(driver);
+    testing::Mock::VerifyAndClearExpectations(&driver);
 }
 
 // Tests that typing "AltGr + A" produces "Shift + AltGr + A".
@@ -260,7 +260,7 @@ TEST_F(CapsWord, ShiftsAltGrSymbols) {
     run_one_scan_loop();
     key_altgr.release();
 
-    VERIFY_AND_CLEAR(driver);
+    testing::Mock::VerifyAndClearExpectations(&driver);
 }
 
 // Tests typing "AltGr + A" using a mod-tap key.
@@ -291,7 +291,7 @@ TEST_F(CapsWord, ShiftsModTapAltGrSymbols) {
     key_altgr_t.release();
 
     EXPECT_TRUE(is_caps_word_on());
-    VERIFY_AND_CLEAR(driver);
+    testing::Mock::VerifyAndClearExpectations(&driver);
 }
 
 struct CapsWordPressUserParams {
@@ -326,7 +326,7 @@ TEST_P(CapsWordPressUser, KeyCode) {
     EXPECT_EQ(passed_keycode, GetParam().expected_passed_keycode);
     EXPECT_EQ(is_caps_word_on(), GetParam().continues_caps_word);
     clear_oneshot_mods();
-    VERIFY_AND_CLEAR(driver);
+    testing::Mock::VerifyAndClearExpectations(&driver);
 }
 
 const uint16_t LT_1_KC_A = LT(1, KC_A);
@@ -371,11 +371,6 @@ INSTANTIATE_TEST_CASE_P(
             "OSL", OSL(1), 1, KC_NO, true},
         CapsWordPressUserParams{
             "LT_held", LT_1_KC_A, TAPPING_TERM + 1, KC_NO, true},
-        // Tri-Layer keys are ignored and continue Caps Word.
-        CapsWordPressUserParams{
-            "TL_LOWR", TL_LOWR, 1, KC_NO, true},
-        CapsWordPressUserParams{
-            "TL_UPPR", TL_UPPR, 1, KC_NO, true},
         // AltGr keys are ignored and continue Caps Word.
         CapsWordPressUserParams{
             "KC_RALT", KC_RALT, 1, KC_NO, true},
@@ -436,7 +431,7 @@ TEST_P(CapsWordBothShifts, PressLRLR) {
 
     EXPECT_EQ(is_caps_word_on(), true);
 
-    VERIFY_AND_CLEAR(driver);
+    testing::Mock::VerifyAndClearExpectations(&driver);
 }
 
 // Pressing shifts as "Left down, Right down, Right up, Left up".
@@ -473,7 +468,7 @@ TEST_P(CapsWordBothShifts, PressLRRL) {
 
     EXPECT_EQ(is_caps_word_on(), true);
 
-    VERIFY_AND_CLEAR(driver);
+    testing::Mock::VerifyAndClearExpectations(&driver);
 }
 
 // clang-format off
@@ -510,8 +505,7 @@ class CapsWordDoubleTapShift : public ::testing::WithParamInterface<CapsWordDoub
 TEST_P(CapsWordDoubleTapShift, Activation) {
     TestDriver driver;
     KeymapKey  left_shift(0, 0, 0, GetParam().left_shift_keycode);
-    KeymapKey  esc(0, 0, 1, KC_ESCAPE);
-    set_keymap({left_shift, esc});
+    set_keymap({left_shift});
 
     // clang-format off
     EXPECT_CALL(driver, send_keyboard_mock(AnyOf(
@@ -529,13 +523,7 @@ TEST_P(CapsWordDoubleTapShift, Activation) {
 
     EXPECT_EQ(is_caps_word_on(), true);
 
-    VERIFY_AND_CLEAR(driver);
-
-    // We have to manually reset the internal state of the caps word state
-    // machine at this point. This due to imperfect test isolation which can't
-    // reset the caps word double shift timer on test case setup.
-    idle_for(CAPS_WORD_IDLE_TIMEOUT);
-    tap_key(esc);
+    testing::Mock::VerifyAndClearExpectations(&driver);
 }
 
 // Double tap doesn't count if another key is pressed between the taps.
@@ -567,7 +555,7 @@ TEST_P(CapsWordDoubleTapShift, Interrupted) {
     EXPECT_EQ(is_caps_word_on(), false); // Caps Word is still off.
     clear_oneshot_mods();
 
-    VERIFY_AND_CLEAR(driver);
+    testing::Mock::VerifyAndClearExpectations(&driver);
 }
 
 // Double tap doesn't count if taps are more than tapping term apart.
@@ -590,7 +578,7 @@ TEST_P(CapsWordDoubleTapShift, SlowTaps) {
     EXPECT_EQ(is_caps_word_on(), false); // Caps Word is still off.
     clear_oneshot_mods();
 
-    VERIFY_AND_CLEAR(driver);
+    testing::Mock::VerifyAndClearExpectations(&driver);
 }
 
 // clang-format off
@@ -603,57 +591,6 @@ INSTANTIATE_TEST_CASE_P(
         ),
     CapsWordDoubleTapShiftParams::GetName
     );
-
-// Tests that holding a OSL keeps caps word active and shifts keys on the layer that need to be shifted.
-TEST_F(CapsWord, IgnoresOSLHold) {
-    TestDriver driver;
-    KeymapKey key_a(0, 0, 0, KC_A);
-    KeymapKey key_osl(0, 1, 0, OSL(1));
-    KeymapKey key_b(1, 0, 0, KC_B);
-    set_keymap({key_a, key_osl, key_b});
-
-    // Allow any number of reports with no keys or only modifiers.
-    // clang-format off
-    EXPECT_CALL(driver, send_keyboard_mock(AnyOf(
-                KeyboardReport(),
-                KeyboardReport(KC_LSFT))))
-        .Times(AnyNumber());
-
-    EXPECT_REPORT(driver, (KC_LSFT, KC_B));
-    caps_word_on();
-
-    key_osl.press();
-    run_one_scan_loop();
-    tap_key(key_b);
-    key_osl.release();
-    run_one_scan_loop();
-
-    VERIFY_AND_CLEAR(driver);
-}
-
-// Tests that tapping a OSL keeps caps word active and shifts keys on the layer that need to be shifted.
-TEST_F(CapsWord, IgnoresOSLTap) {
-    TestDriver driver;
-    KeymapKey key_a(0, 0, 0, KC_A);
-    KeymapKey key_osl(0, 1, 0, OSL(1));
-    KeymapKey key_b(1, 0, 0, KC_B);
-    set_keymap({key_a, key_osl, key_b});
-
-    // Allow any number of reports with no keys or only modifiers.
-    // clang-format off
-    EXPECT_CALL(driver, send_keyboard_mock(AnyOf(
-                KeyboardReport(),
-                KeyboardReport(KC_LSFT))))
-        .Times(AnyNumber());
-
-    EXPECT_REPORT(driver, (KC_LSFT, KC_B));
-    caps_word_on();
-
-    tap_key(key_osl);
-    tap_key(key_b);
-    run_one_scan_loop();
-
-    VERIFY_AND_CLEAR(driver);
-}
 // clang-format on
+
 } // namespace

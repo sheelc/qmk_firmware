@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "quantum.h"
+#include "kbd75rgb.h"
 
 #ifdef RGB_MATRIX_ENABLE
 led_config_t g_led_config = { {
@@ -44,7 +44,7 @@ bool rgb_matrix_indicators_kb(void) {
     if (!rgb_matrix_indicators_user()) {
         return false;
     }
-    if (host_keyboard_led_state().caps_lock)
+    if (IS_HOST_LED_ON(USB_LED_CAPS_LOCK))
     {
         rgb_matrix_set_color(59, 0xFF, 0xFF, 0xFF);
     }

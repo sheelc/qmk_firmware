@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include "config_common.h"
 
 #define DRIVER_1_LED_TOTAL 66
 #define DRIVER_2_LED_TOTAL 33

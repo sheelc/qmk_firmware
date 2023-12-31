@@ -39,13 +39,19 @@ void led_init_ports(void) {
 
 
 #ifndef WINLOCK_DISABLED
+static bool win_key_locked = false;
+
 bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case GUI_TOG:
+        case KC_TGUI:
             if (record->event.pressed) {
-                // Toggle LED on key press
-                togglePin(LED_WIN_LOCK_PIN);
+                // Toggle GUI lock on key press
+                win_key_locked = !win_key_locked;
+                writePin(LED_WIN_LOCK_PIN, !win_key_locked);
             }
+            break;
+        case KC_LGUI:
+            if (win_key_locked) { return false; }
             break;
     }
     return process_record_user(keycode, record);

@@ -17,7 +17,12 @@
 #pragma once
 
 /* RGB Matrix Configuration */
-#define RGB_MATRIX_LED_COUNT 67
+#define DRIVER_1_LED_TOTAL 34
+#define DRIVER_2_LED_TOTAL 33
+#define RGB_MATRIX_LED_COUNT (DRIVER_1_LED_TOTAL + DRIVER_2_LED_TOTAL)
 
-/* Enable caps-lock LED */
-#define CAPS_LOCK_LED_INDEX 30
+/* Encoder used pins */
+#define ENCODERS_PAD_A { A10 }
+#define ENCODERS_PAD_B { B5 }
+#define ENCODER_RESOLUTION 4
+#define ENCODER_DEFAULT_POS 0x3

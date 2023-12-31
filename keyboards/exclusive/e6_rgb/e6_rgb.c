@@ -1,4 +1,8 @@
-#include "quantum.h"
+/**
+ * e6_rgb.c
+ */
+
+#include "e6_rgb.h"
 
 #ifdef RGB_MATRIX_ENABLE
 void matrix_init_kb(void) {
@@ -7,7 +11,7 @@ void matrix_init_kb(void) {
   matrix_init_user();
 }
 
-const is31fl3733_led_t PROGMEM g_is31fl3733_leds[RGB_MATRIX_LED_COUNT] = {
+const is31_led PROGMEM g_is31_leds[RGB_MATRIX_LED_COUNT] = {
 /* Refer to IS31 manual for these locations
  *   driver
  *   |  R location

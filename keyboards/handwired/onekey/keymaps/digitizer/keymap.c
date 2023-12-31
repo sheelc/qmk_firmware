@@ -32,7 +32,7 @@ void keyboard_post_init_user(void) {
     digitizer_in_range_on();
 }
 
-void matrix_scan_user(void) {
+void matrix_scan_user() {
     if (timer_elapsed32(timer) < 200) {
         return;
     }

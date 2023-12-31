@@ -14,20 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "quantum.h"
+#include "orion.h"
 
-void board_init(void) {
-   //JTAG-DP Disabled and SW-DP Enabled    
-   AFIO->MAPR = (AFIO->MAPR & ~AFIO_MAPR_SWJ_CFG_Msk) | AFIO_MAPR_SWJ_CFG_DISABLE;
-}
-
-void keyboard_pre_init_kb(void) {
+void led_init_ports(void) {
   setPinOutput(B5);
   setPinOutput(B6);
   setPinOutput(B7);
   setPinOutput(B8);
   setPinOutput(B9);
-  keyboard_pre_init_user();
+
 }
 
 layer_state_t layer_state_set_kb(layer_state_t state) {

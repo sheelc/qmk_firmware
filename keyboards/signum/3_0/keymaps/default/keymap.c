@@ -312,7 +312,7 @@ ypsilon,
 zeta
 };
 
-const uint32_t unicode_map[] PROGMEM = {
+const uint32_t PROGMEM unicode_map[] = {
 	[AB_ARC] = 0x0361,  // ͡
 	[AB_LINE] = 0x0305,  // ̅
 	[AB_VEC] = 0x20d7,  // ⃗

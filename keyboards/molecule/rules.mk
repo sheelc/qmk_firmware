@@ -1,3 +1,9 @@
+# MCU name
+MCU = atmega32u4
+
+# Bootloader selection
+BOOTLOADER = atmel-dfu
+
 # Build Options
 #   change yes to no to disable
 #
@@ -15,4 +21,4 @@ AUDIO_ENABLE = no           # Audio output
 POINTING_DEVICE_ENABLE = yes
 POINTING_DEVICE_DRIVER = custom
 SRC += adns.c
-SPI_DRIVER_REQUIRED = yes
+QUANTUM_LIB_SRC += spi_master.c

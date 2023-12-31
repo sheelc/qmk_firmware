@@ -1,3 +1,9 @@
+# MCU name
+MCU = atmega32u4
+
+# Bootloader selection
+BOOTLOADER = atmel-dfu
+
 # Build Options
 #   change yes to no to disable
 #
@@ -12,10 +18,11 @@ AUDIO_ENABLE = no           # Audio output
 LTO_ENABLE = yes
 
 RGB_MATRIX_ENABLE = yes     # Enable RGB matrix effects.
+RGB_MATRIX_DRIVER = custom  # Enable RGB matrix effects.
 
 COMMON_VPATH += $(DRIVER_PATH)/issi
 
 # project specific files
 SRC +=  drivers/led/issi/is31fl3731.c
 
-I2C_DRIVER_REQUIRED = yes
+QUANTUM_LIB_SRC += i2c_master.c

@@ -13,7 +13,7 @@ enum {
 };
 
 //Tap Dance Definitions
-tap_dance_action_t tap_dance_actions[] = {
+qk_tap_dance_action_t tap_dance_actions[] = {
   //Tap once for ;, twice for ' -not using this currently
   [TD_SEMI_QUOT]  = ACTION_TAP_DANCE_DOUBLE(KC_SCLN, KC_QUOT),
   //Tap once for , twice for -
@@ -50,30 +50,39 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 //Leader maps
-void leader_end_user(void) {
-    if (leader_sequence_one_key(KC_F)) {
-        // Anything you can do in a macro.
-        SEND_STRING("QMK is awesome.");
+
+
+LEADER_EXTERNS();
+
+void matrix_scan_user(void) {
+  LEADER_DICTIONARY() {
+    leading = false;
+    leader_end();
+
+    SEQ_ONE_KEY(KC_F) {
+      // Anything you can do in a macro.
+      SEND_STRING("QMK is awesome.");
     }
     //tableflip (LEADER - TF)
-    if (leader_sequence_two_keys(KC_T, KC_F)) {
+    SEQ_TWO_KEYS(KC_T, KC_F) {
         set_unicode_input_mode(UNICODE_MODE_MACOS);
         send_unicode_string("(ノಠ痊ಠ)ノ彡┻━┻");
     }
     //screencap (LEADER - SC)
-    if (leader_sequence_two_keys(KC_S, KC_C)) {
-        SEND_STRING(SS_LGUI(SS_LSFT(SS_TAP(X_4))));
+    SEQ_TWO_KEYS(KC_S, KC_C) {
+      SEND_STRING(SS_LGUI(SS_LSFT(SS_TAP(X_4))));
     }
     //screencap (LEADER - TM)
-    if (leader_sequence_two_keys(KC_T, KC_M)) {
+    SEQ_TWO_KEYS(KC_T, KC_M) {
         set_unicode_input_mode(UNICODE_MODE_MACOS);
         register_unicode(0x2122); // ™
     }
     /*
-    if (leader_sequence_three_keys(KC_D, KC_D, KC_S)) {
-        SEND_STRING("https://start.duckduckgo.com"SS_TAP(X_ENTER));
+    SEQ_THREE_KEYS(KC_D, KC_D, KC_S) {
+      SEND_STRING("https://start.duckduckgo.com"SS_TAP(X_ENTER));
     }
     */
+  }
 }
 
 //change colors and rgb modes on layer change

@@ -16,8 +16,21 @@
 
 #pragma once
 
+/* key matrix pins */
+#define MATRIX_ROW_PINS \
+    { B4, B3, A15, A14, A13 }
+#define MATRIX_COL_PINS \
+    { C14, C15, A0, A1, A2, A3, A4, A5, A6, A7, B0, B1, A8, A9 }
+
+/* COL2ROW or ROW2COL */
+#define DIODE_DIRECTION ROW2COL
+
+/* Set 0 if debouncing isn't needed */
+#define DEBOUNCE 5
+
 /* RGB Matrix Driver Configuration */
-#define SNLED27351_I2C_ADDRESS_1 SNLED27351_I2C_ADDRESS_VDDIO
+#define DRIVER_COUNT 1
+#define DRIVER_ADDR_1 0b1110111
 
 /* Increase I2C speed to 1000 KHz */
 #define I2C1_TIMINGR_PRESC 0U
@@ -26,7 +39,7 @@
 #define I2C1_TIMINGR_SCLH 15U
 #define I2C1_TIMINGR_SCLL 51U
 
-#define SNLED27351_CURRENT_TUNE \
+#define CKLED2001_CURRENT_TUNE \
     { 0xD0, 0xD0, 0x60, 0xD0, 0xD0, 0x60, 0xD0, 0xD0, 0x60, 0xD0, 0xD0, 0x60 }
 
 /* DIP switch */

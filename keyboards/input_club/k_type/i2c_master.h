@@ -26,7 +26,6 @@
 
 #include <ch.h>
 #include <hal.h>
-#include "gpio.h"
 
 #ifndef I2C_COUNT
 #    define I2C_COUNT 1

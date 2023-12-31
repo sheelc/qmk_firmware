@@ -110,6 +110,10 @@ void matrix_init_user(void) {
   #endif
 }
 
+void matrix_scan_user(void) {
+
+}
+
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state)) {
         case _L0:
@@ -147,4 +151,8 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             break;
     }
     return state;
+}
+
+void led_set_user(uint8_t usb_led) {
+
 }

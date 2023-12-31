@@ -370,7 +370,7 @@ void saveState(uint32_t cleanChord) {
 	for (int i = 0; i < 32; i++) 
 		pChordState[i] = chordState[i];
 }
-void restoreState(void) {
+void restoreState() {
 	cChord = pChord;
 	chordIndex = pChordIndex;
 	for (int i = 0; i < 32; i++) 

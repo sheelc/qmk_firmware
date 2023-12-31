@@ -5,6 +5,10 @@
 
 #pragma once
 
+#include "config_common.h"
+
+#define RGB_DI_PIN F0
+
 // RGB Matrix config
 #if defined(RGB_MATRIX_ENABLE)
     #ifndef ID67_DISABLE_UNDERGLOW

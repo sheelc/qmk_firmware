@@ -1,3 +1,9 @@
+# MCU name
+MCU = atmega32u4
+
+# Bootloader selection
+BOOTLOADER = atmel-dfu
+
 # Build Options
 #   change yes to no to disable
 #
@@ -14,5 +20,4 @@ UNICODE_ENABLE = yes
 SPLIT_KEYBOARD = yes
 SPLIT_TRANSPORT = custom
 
-SRC += transport.c
-SPI_DRIVER_REQUIRED = yes
+SRC += transport.c spi_master.c

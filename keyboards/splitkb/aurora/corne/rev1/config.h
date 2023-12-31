@@ -33,3 +33,13 @@
 #    define RGB_MATRIX_SPLIT { 27, 27 }
 #    define SPLIT_TRANSPORT_MIRROR
 #endif
+
+// Not yet available in `info.json`
+#ifdef BOOTMAGIC_ENABLE
+     // Top left key on left half
+#    define BOOTMAGIC_LITE_ROW 0
+#    define BOOTMAGIC_LITE_COLUMN 5
+     // Top right key on right half
+#    define BOOTMAGIC_LITE_ROW_RIGHT    4
+#    define BOOTMAGIC_LITE_COLUMN_RIGHT 5
+#endif

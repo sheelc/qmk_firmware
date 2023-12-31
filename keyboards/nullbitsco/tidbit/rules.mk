@@ -1,3 +1,9 @@
+# MCU name
+MCU = atmega32u4
+
+# Bootloader selection
+BOOTLOADER = atmel-dfu
+
 # Build Options
 #   change yes to no to disable
 #
@@ -16,5 +22,5 @@ LTO_ENABLE = yes
 # Project specific files
 SRC += common/bitc_led.c \
     common/remote_kb.c
-I2C_DRIVER_REQUIRED = yes
-UART_DRIVER_REQUIRED = yes
+QUANTUM_LIB_SRC += i2c_master.c \
+    uart.c
