@@ -33,7 +33,7 @@ enum td_keycodes {
 
 keymap_config_t keymap_config;
 
-tap_dance_action_t tap_dance_actions[] = {
+qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_LPAR] = ACTION_TAP_DANCE_DOUBLE(KC_9, S(KC_9)),
     [TD_RPAR] = ACTION_TAP_DANCE_DOUBLE(KC_0, S(KC_0)),
     [TD_MINS] = ACTION_TAP_DANCE_DOUBLE(KC_MINS, S(KC_MINS)),
