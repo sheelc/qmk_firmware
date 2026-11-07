@@ -37,3 +37,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     )
 };
 // clang-format on
+
+void keyboard_post_init_user(void) {
+#ifdef OFFICE_MODE
+    // Default to Mac Mode
+    layer_on(1);
+    
+    // Turn off general key backlight by setting it to solid black
+    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+    rgb_matrix_sethsv_noeeprom(0, 0, 0);
+#endif
+}
+
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    // If we are currently holding the Function key (Layer 2)
+    if (get_highest_layer(layer_state) == 2) {
+        // LED Index 35 is the 'Q' key on the Evo80 matrix
+        if (layer_state_is(1)) {
+            // Mac Mode is ON -> Red
+            RGB_MATRIX_INDICATOR_SET_COLOR(35, 255, 0, 0);
+        } else {
+            // Linux Mode (Layer 1 OFF) -> Green
+            RGB_MATRIX_INDICATOR_SET_COLOR(35, 0, 255, 0);
+        }
+    }
+    
+    // Return false to allow the base Evo80 Bluetooth/Battery indicators to run!
+    return false;
+}
